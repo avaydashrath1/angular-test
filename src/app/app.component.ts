@@ -13,10 +13,9 @@ export class AppComponent  implements OnInit{
   ngOnInit() {
   }
 
-
+// on upload read file and process it
   uploadListener($event: any): void {
     console.log(" change file: ");
-    let text = [];
     let files = $event.srcElement.files;
 
     if (this.isValidCSVFile(files[0])) {
@@ -45,6 +44,8 @@ export class AppComponent  implements OnInit{
     }
   }
 
+  
+  // read csv record and add to array
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any, headersRow: any) {
     let csvArr = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
@@ -62,10 +63,12 @@ export class AppComponent  implements OnInit{
     return csvArr;
   }
 
+  // check file format
   isValidCSVFile(file: any) {
     return file.name.endsWith(".csv");
   }
 
+  // read header of csv
   getHeaderArray(csvRecordsArr: any) {
     let headers = (<string>csvRecordsArr[0]).split(',');
     let headerArray = [];
@@ -75,10 +78,12 @@ export class AppComponent  implements OnInit{
     return headerArray;
   }
 
+  // reset records
   fileReset() {
     this.records = [];
   }
 
+  // send records to server
   csvDataPush(){
     console.log(this.records);
   }
