@@ -4,7 +4,9 @@ angular-test is a project which contains the functionality of import data from a
 
 ## Problem Statement
 
-AppComponent contains a method uploadListener() which adds the functionality of reading and store CSV data but it's not storing it as expected please look at the function and find the cause and solution of the problem.
+AppComponent contains a method uploadListener() which adds the functionality of reading and store CSV data 
+but while reading 'employee_list.csv' it's not storing data of 'row with id: 10' as expected 
+please look at the function and find the cause and solution of the problem.
 
 ## functionality pending
 
