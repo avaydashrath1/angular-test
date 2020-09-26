@@ -1,1 +1,11 @@
+# angular-test
 
+angular-test is a project which contains the functionality of import data from a CSV file.
+
+## Problem Statement
+
+AppComponent contains a method uploadListener() which adds the functionality of reading and store CSV data but it's not storing it as expected please look at the function and find the cause and solution of the problem.
+
+## functionality pending
+
+AppComponet contains a function csvDataPush() add funcationality of send 'records' arrary to api endpoint : 'http://demo8739287.mockable.io/dealshare/save-employee-detail'
