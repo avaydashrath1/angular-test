@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ApiService } from './service/api.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,15 +9,19 @@ export class AppComponent  implements OnInit{
 
   public records: any[] = [];
   public csvHeader: any[] = [];
+/**
+   * Constructor
+   */
+  constructor(
+    private api: ApiService,
+  ) {}
 
   ngOnInit() {
   }
 
 // on upload read file and process it
   uploadListener($event: any): void {
-    console.log(" change file: ");
     let files = $event.srcElement.files;
-
     if (this.isValidCSVFile(files[0])) {
 
       let input = $event.target;
@@ -27,7 +31,6 @@ export class AppComponent  implements OnInit{
       reader.onload = () => {
         let csvData = reader.result;
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
-
         let headersRow = this.getHeaderArray(csvRecordsArray);
         this.csvHeader = headersRow;
         this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length, headersRow);
@@ -50,12 +53,26 @@ export class AppComponent  implements OnInit{
     let csvArr = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
       let curruntRecord = (<string>csvRecordsArray[i]).split(',');
+      
       if (curruntRecord != null) {
         let subArray = {};
         for (let cr = 0; cr < curruntRecord.length; cr++) {
-          let arrayKey = headersRow[cr];
-          let arrayValue = curruntRecord[cr].trim();
-          subArray[arrayKey] = arrayValue;
+          if(curruntRecord.length > headerLength ){
+            
+            let arrayKey = headersRow[cr];
+            let arrayValue = curruntRecord[cr].trim();
+            if(cr == 2 || cr ==3){
+              arrayValue = curruntRecord[2].replace('"', '').trim() +' '+ curruntRecord[3].replace('"', '').trim();
+            }
+            if(arrayKey == undefined){
+              arrayKey =headersRow[headerLength-1];
+            }
+            subArray[arrayKey] = arrayValue; 
+          }else{
+            let arrayKey = headersRow[cr];
+            let arrayValue = curruntRecord[cr].trim();
+            subArray[arrayKey] = arrayValue;
+          }
         }
           csvArr.push(subArray);
       }
@@ -85,7 +102,14 @@ export class AppComponent  implements OnInit{
 
   // send records to server
   csvDataPush(){
-    console.log(this.records);
+    this.api.postCsv({'records':this.records}).subscribe(
+      (response) => {
+        console.log(response,'response success');
+      },
+      (e) => {
+        console.log(e,'e error');
+      }
+    );
   }
 
 }

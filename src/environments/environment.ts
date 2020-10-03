@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiEndPoint:'http://demo8739287.mockable.io/dealshare'
 };
 
 /*
